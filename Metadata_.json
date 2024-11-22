@@ -1,0 +1,10 @@
+{
+    "name": "dog",
+    "description": "dog NFT",
+    "image": "https://gateway.pinata.cloud/ipfs/QmXXqtHcrLfE1yJRY7V3ETV9cfx3P1DrcYJGQYkRo28Hjh",
+    "attributes": [
+        {
+            "value":10
+        }
+    ]
+  }

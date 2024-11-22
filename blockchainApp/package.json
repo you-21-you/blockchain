@@ -1,7 +1,7 @@
 {
   "name": "blockchainapp",
   "version": "1.0.0",
-  "description": "",
+  "description": "This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,9 +11,19 @@
   "license": "ISC",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^3.0.0",
+    "@types/web3": "^1.2.2",
     "hardhat": "^2.18.2"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^4.9.3"
+    "@alch/alchemy-web3": "^1.4.7",
+    "@opensea/seaport-js": "^2.0.7",
+    "@openzeppelin/contracts": "^4.9.6",
+    "dotenv": "^16.3.1",
+    "ethersV5": "npm:ethers@^5.7.2",
+    "seaport": "github:ProjectOpenSea/seaport#1.5",
+    "web3": "^4.15.0"
+  },
+  "directories": {
+    "test": "test"
   }
 }

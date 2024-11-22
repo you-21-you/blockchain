@@ -9,7 +9,8 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 // 所有者ごとのtokenIdを返却する機能を提供する
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 
-contract MyERC721 is ERC721URIStorage, ERC721Enumerable, AccessControl {
+
+contract bipNFT is ERC721URIStorage, ERC721Enumerable, AccessControl {
     /// @dev tokenIdを自動インクリメントするためのカウンター, default: 0
    uint256 private _tokenIdCounter;
 
@@ -29,6 +30,11 @@ contract MyERC721 is ERC721URIStorage, ERC721Enumerable, AccessControl {
         // ロール管理者のロールも付与しておく
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
     }
+
+    function _baseURI() internal pure override returns (string memory uri) {
+        return "https://gateway.pinata.cloud/ipfs/";
+    }
+    
     /**
      * @dev このNFTを作成する関数
      * 呼び出しがされると、toに格納されたアドレスが作成されたNFTの保有者となる
@@ -36,13 +42,24 @@ contract MyERC721 is ERC721URIStorage, ERC721Enumerable, AccessControl {
      * 前提条件:
      * - _to: NFTが受け取り可能である、つまり有効なアドレスであること(OpenZeppelin ERC721の実装によりチェックされる)
      */
-    function safeMint(address to, string memory _tokenURI) public onlyRole(MINTER_ROLE) returns (uint256) {
+    
+    function safeMint(address to, string memory uri) public onlyRole(MINTER_ROLE) returns (uint256) {
         uint256 tokenId = _tokenIdCounter;
+        //_baseURI = "https://gateway.pinata.cloud/ipfs/";
         _tokenIdCounter += 1;
         _safeMint(to, tokenId);
-        _setTokenURI(tokenId, _tokenURI);
+        _setTokenURI(tokenId, uri);
         return tokenId;
     }
+
+    // Example Solidity Function
+    // function mintNFT(address recipient, string memory tokenURI) public returns (uint256) {
+    //     uint256 newItemId = _tokenIdCounter.current();
+    //     _safeMint(recipient, newItemId);
+    //     _setTokenURI(newItemId, tokenURI);
+    //     _tokenIdCounter.increment();
+    //     return newItemId;
+    // }
 
     // 以下はオーバーライドした関数
 
@@ -50,6 +67,16 @@ contract MyERC721 is ERC721URIStorage, ERC721Enumerable, AccessControl {
     function tokenURI(uint256 tokenId) public view override(ERC721, ERC721URIStorage) returns (string memory) {
         return super.tokenURI(tokenId);
     }
+
+//     /**
+//  * @dev Returns the metadata URI for a given token ID.
+//  */
+//     function tokenURI(uint256 _tokenId) public view returns (string) {
+//         return string.concat(
+//         _baseURI(),
+//         Strings.uint2str(_tokenId)
+//         );
+//     }
 
     // OpenZeppelin ERC721で提供される、NFTの作成やtransferのときに呼び出されるhook
     // ERC721EnumerableでNFT保有者ごとの保有NFTのインデックスが作成される処理が標準実装されているため、継承元呼び出しのみとなる
